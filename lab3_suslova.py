@@ -1,6 +1,6 @@
 # variant 12
 
-#1 задача
+# 1 задача
 def get_class(p, min_v=None):
     while True:
         try:
@@ -45,7 +45,7 @@ def task_1():
     print(f"средняя оценка во 2 классе: {sr_2:.2f}")
 
 
-#2 задача
+# 2 задача
 def task_2():
     p=0
     while p<=20:
@@ -53,9 +53,31 @@ def task_2():
         print(f"2^{p} = {r}")
         p+=1
 
-choise=get_int('выберите задачу (1 или 2): ', min_v=1, max_v=2)
+# 3 задача
+import string
+def task_3():
+    stroka=input('введите строку: ')
+
+    for c in string.punctuation:
+        stroka=stroka.replace(c,' ')
+
+    slova=stroka.split()
+    print('\nслова, которые заканчиваются на "я": ')
+    f=False
+    for s in slova:
+        s=s.lower()
+        if s[-1]=='я':
+            print(s)
+            f=True
+    if f==False:
+        print('таких слов не найдено')
+
+# выбор задачи
+choise=get_int('выберите задачу: ', min_v=1, max_v=3)
 match choise:
     case 1:
         task_1()
     case 2:
         task_2()
+    case 3:
+        task_3()
