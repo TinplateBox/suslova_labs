@@ -37,6 +37,7 @@ class TestValidateN:
   
     def test_float_integral_passes(self):
          _validate_n(3.0)
+
 class TestRandomSeries: 
     def test_length(self): 
         assert len(random_series(10, seed=1)) == 10 
@@ -75,7 +76,7 @@ class TestSineSeries:
         data = sine_series(100, amplitude=2.0, noise=0.0) 
         assert all(-2.0 - 1e-9 <= x <= 2.0 + 1e-9 for x in data) 
   
-  
+
 class TestTrendSeries: 
     def test_linear_without_noise(self): 
         data = trend_series(5, start=0, step=2.0, noise=0.0) 

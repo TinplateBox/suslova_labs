@@ -27,6 +27,16 @@ def exponential_moving_average(data, alpha):
         result.append(ema_val)
     return result
 
+def centered_moving_average(data, window):
+    check_window(window, len(data))
+    if window % 2 == 0:
+        raise ValueError("для центрированного среднего окно должно быть нечетным")
+    half = window // 2
+    result = [None]*len(data)
+    for i in range(half, len(data) - half):
+        result[i] = sum(data[i - half : i + half + 1]) / window
+    return  result
+
 def simple_moving_average_deque(data: Sequence[float], window: int) -> List[float]: 
     """SMA с использованием deque (двусторонней очереди).""" 
     check_window(window, len(data)) 
@@ -52,3 +62,39 @@ def calculate_mse(original: Sequence[float], sma: Sequence[float], window: int) 
         error = original[i] - sma[sma_idx]
         squared_errors.append(error**2)
     return sum(squared_errors) / len(squared_errors)
+
+def benchmark_moving_average(data: Sequence[float], window: int, repeats: int = 1000) -> dict: 
+    """ 
+    Замеряет среднее время выполнения SMA для реализаций на list и deque. 
+    Возвращает словарь с ключами 'list' и 'deque' (время в секундах). 
+    """ 
+    # Проверка корректности окна (выбросит ValueError при необходимости) 
+    check_window(window, len(data)) 
+     
+    # Замер для list-реализации (существующая simple_moving_average) 
+    t0 = time.perf_counter() 
+    for _ in range(repeats): 
+        simple_moving_average(data, window) 
+    t_list = (time.perf_counter() - t0) / repeats 
+     
+    # Замер для deque-реализации 
+    t0 = time.perf_counter() 
+    for _ in range(repeats): 
+        simple_moving_average_deque(data, window) 
+    t_deque = (time.perf_counter() - t0) / repeats 
+     
+    return {"list": t_list, "deque": t_deque}
+
+def moving_median(data: Sequence[float], window: int) -> List[float]:
+    """скользящая медиана"""
+    check_window(window, len(data))
+    result=[]
+    for i in range(len(data) - window +1):
+        w_data = sorted(data[i:i+window])
+        k=window//2
+        if window%2==1:
+            result.append(float(w_data[k]))
+        else:
+            result.append((w_data[k-1] + w_data[k])/2.0)
+    return result
+

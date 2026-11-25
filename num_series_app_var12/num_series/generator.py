@@ -1,4 +1,4 @@
-
+import math
 import random 
 from typing import List, Optional 
 
@@ -26,3 +26,29 @@ def random_series(n: int,
     raise ValueError(f"low должно быть меньше high (получено: {low} >= {high})") 
   rng = random.Random(seed) 
   return [low + (high - low) * rng.random() for _ in range(n)] 
+
+def sine_series(n: int, 
+        amplitude: float = 1.0, 
+        frequency: float = 1.0, 
+        noise: float = 0.0, 
+        seed: Optional[int] = None) -> List[float]:
+  _validate_n(n) 
+  rng = random.Random(seed) 
+  return [ 
+    amplitude * math.sin(2 * math.pi * frequency * i / n) 
+    + (rng.uniform(-noise, noise) if noise else 0.0) 
+    for i in range(n) 
+  ] 
+
+def trend_series(n: int, 
+         start: float = 0.0, 
+         step: float = 1.0, 
+         noise: float = 0.0, 
+         seed: Optional[int] = None) -> List[float]: 
+  """Линейный тренд (полезно, чтобы увидеть, что MA смещается).""" 
+  _validate_n(n) 
+  rng = random.Random(seed) 
+  return [ 
+    start + step * i + (rng.uniform(-noise, noise) if noise else 0.0) 
+    for i in range(n) 
+  ]

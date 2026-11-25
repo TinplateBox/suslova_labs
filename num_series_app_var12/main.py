@@ -47,6 +47,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--negative", action="store_true", help="тест с отрицательными числами (В1)")
     return parser
 
+
 def main(argv: List[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
